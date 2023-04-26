@@ -43,7 +43,7 @@ bool canPlace(int board[][20], int n, int i, int j)
             return false;
         }
         x--;
-        y--;
+        y++;
     }
     return true;
 }
