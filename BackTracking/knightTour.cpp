@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define N 8
 
-int isSafe(int x, int y, const vector<vector<int>> &sol)
+int isSafe(int x, int y, const vector<vector<int>> &sol, int N)
 {
     return (x >= 0 && x < N && y >= 0 && y < N && sol[x][y] == -1);
 }
@@ -10,6 +9,7 @@ int isSafe(int x, int y, const vector<vector<int>> &sol)
 int solveKTUtil(int x, int y, int movei, vector<vector<int>> &sol, vector<int> &xMove, vector<int> &yMove)
 {
     int k, next_x, next_y;
+    int N = sol.size();
     if (movei == N * N)
         return 1;
 
@@ -17,7 +17,7 @@ int solveKTUtil(int x, int y, int movei, vector<vector<int>> &sol, vector<int> &
     {
         next_x = x + xMove[k];
         next_y = y + yMove[k];
-        if (isSafe(next_x, next_y, sol))
+        if (isSafe(next_x, next_y, sol, N))
         {
             sol[next_x][next_y] = movei;
             if (solveKTUtil(next_x, next_y, movei + 1, sol, xMove, yMove) == 1)
@@ -29,7 +29,7 @@ int solveKTUtil(int x, int y, int movei, vector<vector<int>> &sol, vector<int> &
     return 0;
 }
 
-void printSolution(const vector<vector<int>> &sol)
+void printSolution(const vector<vector<int>> &sol, int N)
 {
     for (int x = 0; x < N; x++)
     {
@@ -39,9 +39,10 @@ void printSolution(const vector<vector<int>> &sol)
     }
 }
 
-int solveKT()
+int solveKT(int N)
 {
     vector<vector<int>> sol(N, vector<int>(N, -1));
+
     vector<int> xMove = {2, 1, -1, -2, -2, -1, 1, 2};
     vector<int> yMove = {1, 2, 2, 1, -1, -2, -2, -1};
 
@@ -53,13 +54,17 @@ int solveKT()
         return 0;
     }
     else
-        printSolution(sol);
+        printSolution(sol, N);
 
     return 1;
 }
 
 int main()
 {
-    solveKT();
+    int N;
+    cout << "Enter the size of the chessboard (N x N): ";
+    cin >> N;
+
+    solveKT(N);
     return 0;
 }
