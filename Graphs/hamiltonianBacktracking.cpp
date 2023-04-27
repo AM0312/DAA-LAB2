@@ -26,6 +26,7 @@ public:
         for (int i = 0; i < V; i++)
         {
             list<int>::iterator it;
+            cout << i << ": ";
             for (it = l[i].begin(); it != l[i].end(); it++)
             {
                 cout << *it << " ";
@@ -34,38 +35,27 @@ public:
         }
     }
 
-    bool isSafe(int v, vector<bool> visited)
+    bool isSafe(int v, vector<bool> &visited)
     {
         if (visited[v])
             return false;
 
-        visited[v] = true;
-        path.push_back(v);
-
         if (path.size() == V)
-        {
             return true;
-        }
 
-        bool res = false;
+        visited[v] = true;
 
         list<int>::iterator it;
         for (it = l[v].begin(); it != l[v].end(); it++)
         {
             if (isSafe(*it, visited))
             {
-                res = true;
-                break;
+                path.push_back(*it);
+                return true;
             }
         }
-
-        if (!res)
-        {
-            visited[v] = false;
-            path.pop_back();
-        }
-
-        return res;
+        visited[v] = false;
+        return false;
     }
 
     bool hamiltonianPath()
@@ -75,20 +65,20 @@ public:
         for (int i = 0; i < V; i++)
         {
             path.clear();
-            visited[i] = true;
             path.push_back(i);
-            if (isSafe(i, visited))
+            visited[i] = true;
+
+            list<int>::iterator it;
+            for (it = l[i].begin(); it != l[i].end(); it++)
             {
-                for (int vertex : path)
+                if (isSafe(*it, visited))
                 {
-                    cout << vertex << " ";
+                    path.push_back(*it);
+                    return true;
                 }
-                cout << endl;
-                return true;
             }
             visited[i] = false;
         }
-
         return false;
     }
 };
